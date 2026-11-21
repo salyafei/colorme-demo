@@ -1,35 +1,118 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Color Me</title>
-    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
-    <style id="expo-reset">
-      /* These styles make the body full-height */
-      html,
-      body {
-        height: 100%;
-      }
-      /* These styles disable body scrolling if you are using <ScrollView> */
-      body {
-        overflow: hidden;
-      }
-      /* These styles make the root element full-height */
-      #root {
-        display: flex;
-        height: 100%;
-        flex: 1;
-      }
-    </style>
-  <link rel="icon" href="/colorme-demo/favicon.ico"/></head>
-
-  <body>
-    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
-    <noscript> You need to enable JavaScript to run this app. </noscript>
-    <!-- The root element for your Expo app. -->
-    <div id="root"></div>
-  <script src="/colorme-demo/_expo/static/js/web/__expo-metro-runtime-8c088df87a31e4e6accd81c554ec290d.js" defer></script><script src="/colorme-demo/_expo/static/js/web/__common-d362590d4aef3a3796ff078f9bcf0d3f.js" defer></script><script src="/colorme-demo/_expo/static/js/web/entry-2be932f7bca3450434b82871c99cc4ea.js" defer></script>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Color Me | Live demo</title>
+<meta name="description" content="Try Color Me in your browser on an iPhone, iPad, Android phone or Android tablet frame.">
+<meta name="theme-color" content="#0C1F33">
+<link rel="icon" href="app/favicon.ico">
+<script>
+/* Real phones skip the frames and open the app full screen, unless a device is asked for. */
+(function(){var q=new URLSearchParams(location.search);
+if(!q.get('device')&&matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<600){
+  var p=q.get('page')||'/';if(!/^\/[A-Za-z0-9_\-\/?=&%.]*$/.test(p))p='/';location.replace('app'+p);}})();
+</script>
+<style>
+:root{--paper:#F5F1E8;--deep:#ECE5D6;--sheet:#FFFDF8;--ink:#0C1F33;--soft:#46525F;--rule:#DDD4C2;--strong:#BFB39C;--accent:#E0522B;--blue:#2C6B99;--frame:#14181D}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--deep);color:var(--ink);font-family:"Instrument Sans",-apple-system,"Helvetica Neue",Roboto,Arial,sans-serif;overflow:hidden;display:flex;flex-direction:column}
+html[lang=ar] body{font-family:"Cairo","Geeza Pro","Noto Sans Arabic",Tahoma,sans-serif}
+.bar{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;padding:10px 16px;background:var(--paper);border-bottom:1.5px solid var(--ink)}
+.brand{display:flex;align-items:baseline;gap:8px;margin-inline-end:auto;white-space:nowrap}
+.brand b{font-family:Georgia,"Times New Roman",serif;font-size:21px;letter-spacing:-.3px}
+.brand span{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+html[lang=ar] .brand span{letter-spacing:0;font-size:13px}
+.seg{display:flex;border:1.25px solid var(--ink);background:var(--sheet)}
+.seg button,.tool{font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);background:transparent;border:0;padding:8px 13px;min-height:38px;cursor:pointer;white-space:nowrap}
+.seg button+button{border-inline-start:1px solid var(--rule)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--sheet)}
+.seg button:hover:not([aria-pressed=true]),.tool:hover:not(:disabled){color:var(--blue)}
+.tool{border:1.25px solid var(--ink);background:var(--sheet);display:inline-flex;align-items:center;gap:7px}
+.tool:disabled{opacity:.4;cursor:default}
+.tool svg{width:16px;height:16px}
+.size{font-size:12.5px;color:var(--soft);font-variant-numeric:tabular-nums;min-width:86px}
+a.tool{text-decoration:none}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px}
+.stage{flex:1;position:relative;overflow:hidden;background-color:var(--deep);
+  background-image:radial-gradient(rgba(107,90,62,.13) 1px,transparent 1.2px);background-size:22px 22px}
+.device{position:absolute;left:50%;top:50%;transform-origin:center center;background:var(--frame);box-shadow:0 30px 70px -30px rgba(12,31,51,.55),0 0 0 1.5px rgba(127,179,213,.25) inset;transition:width .25s,height .25s}
+.device iframe{position:absolute;border:0;background:var(--paper);display:block}
+.device .cam{position:absolute;background:#2a323b;border-radius:99px}
+.device.full{box-shadow:none;background:transparent;transition:none}
+.device.full .cam{display:none}
+.note{position:absolute;inset-inline-start:16px;bottom:12px;font-size:12px;color:var(--soft);max-width:60ch}
+@media(max-width:760px){.size,.note{display:none}.seg button{padding:8px 9px;font-size:12.5px}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="brand"><b>Color Me</b><span data-t="live">Live demo</span></div>
+  <div class="seg" role="group" aria-label="Device" id="devices">
+    <button type="button" data-device="iphone" data-t="iphone">iPhone</button>
+    <button type="button" data-device="ipad" data-t="ipad">iPad</button>
+    <button type="button" data-device="android" data-t="android">Android phone</button>
+    <button type="button" data-device="tablet" data-t="tablet">Android tablet</button>
+    <button type="button" data-device="full" data-t="full">Full screen</button>
+  </div>
+  <button type="button" class="tool" id="rotate" aria-label="Rotate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="3" width="10" height="16" rx="2"/><path d="M20 15a8 8 0 0 1-6 6.5M14 21.5l1.5-2.5M14 21.5l2.8.6"/></svg><span id="rotlabel" data-t="landscape">Landscape</span></button>
+  <span class="size" id="size" aria-live="polite"></span>
+  <button type="button" class="tool" id="lang" lang="ar">العربية</button>
+</header>
+<main class="stage" id="stage">
+  <div class="device" id="device"><span class="cam" id="cam"></span><iframe id="app" title="Color Me app" allow="clipboard-write"></iframe></div>
+  <p class="note" data-t="note">The app runs at the real screen size of each device and is scaled to fit your window. Everything stays in your browser.</p>
+</main>
+<script>
+(function(){
+var DEV={
+  iphone:{w:430,h:932,b:14,r:58,cam:'pill'},
+  ipad:{w:1032,h:1376,b:24,r:38,cam:'dot'},
+  android:{w:412,h:915,b:11,r:34,cam:'hole'},
+  tablet:{w:800,h:1280,b:22,r:26,cam:'dot'}
+};
+var T={en:{live:'Live demo',iphone:'iPhone',ipad:'iPad',android:'Android phone',tablet:'Android tablet',full:'Full screen',landscape:'Landscape',portrait:'Portrait',rotate:'Rotate',note:'The app runs at the real screen size of each device and is scaled to fit your window. Everything stays in your browser.',scale:'shown at'},
+       ar:{live:'عرض تجريبي',iphone:'آيفون',ipad:'آيباد',android:'هاتف أندرويد',tablet:'جهاز أندرويد لوحي',full:'ملء الشاشة',landscape:'أفقي',portrait:'عمودي',rotate:'تدوير',note:'يعمل التطبيق بالمقاس الحقيقي لشاشة كل جهاز ويُصغَّر ليناسب نافذتك. كل شيء يبقى في متصفحك.',scale:'بنسبة'}};
+var q=new URLSearchParams(location.search);
+var coarse=matchMedia('(pointer:coarse)').matches;
+var qd=q.get('device');var device=(DEV[qd]||qd==='full')?qd:(coarse?'full':'iphone');
+var orient=q.get('orient')==='landscape'?'landscape':'portrait';
+var lang=q.get('lang')==='ar'?'ar':(function(){try{return localStorage.getItem('colorme-demo-lang')||'en'}catch(e){return 'en'}})();
+var page=q.get('page')||'/';if(!/^\/[A-Za-z0-9_\-\/?=&%.]*$/.test(page))page='/';
+var el=document.getElementById('device'),fr=document.getElementById('app'),cam=document.getElementById('cam'),stage=document.getElementById('stage');
+fr.src='app'+page;
+function t(k){return T[lang][k]}
+function applyLang(){document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+  document.querySelectorAll('[data-t]').forEach(function(n){n.textContent=t(n.getAttribute('data-t'))});
+  var lb=document.getElementById('lang');lb.textContent=lang==='ar'?'English':'العربية';lb.lang=lang==='ar'?'en':'ar';
+  document.getElementById('rotate').setAttribute('aria-label',t('rotate'));layout();}
+function layout(){
+  var full=device==='full',rot=document.getElementById('rotate');
+  rot.disabled=full;document.getElementById('rotlabel').textContent=t(orient==='landscape'?'portrait':'landscape');
+  document.querySelectorAll('#devices button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-device')===device?'true':'false')});
+  var sw=stage.clientWidth,sh=stage.clientHeight;
+  if(full){el.className='device full';el.style.cssText='left:0;top:0;width:'+sw+'px;height:'+sh+'px;transform:none;border-radius:0';
+    fr.style.cssText='left:0;top:0;width:'+sw+'px;height:'+sh+'px;border-radius:0';document.getElementById('size').textContent=sw+' x '+sh;return;}
+  var d=DEV[device],land=orient==='landscape',w=land?d.h:d.w,h=land?d.w:d.h,b=d.b,W=w+2*b,H=h+2*b;
+  var pad=sw<760?16:40,s=Math.min(1,(sw-pad*2)/W,(sh-pad*2)/H);
+  el.className='device';el.style.cssText='width:'+W+'px;height:'+H+'px;border-radius:'+d.r+'px;transform:translate(-50%,-50%) scale('+s+')';
+  fr.style.cssText='left:'+b+'px;top:'+b+'px;width:'+w+'px;height:'+h+'px;border-radius:'+Math.max(6,d.r-b)+'px';
+  // camera sits in the bezel so it never covers the app
+  var c=d.cam==='pill'?{l:64,s:6}:d.cam==='hole'?{l:7,s:7}:{l:7,s:7};
+  if(!land)cam.style.cssText='left:'+(W-c.l)/2+'px;top:'+(b-c.s)/2+'px;width:'+c.l+'px;height:'+c.s+'px';
+  else cam.style.cssText='top:'+(H-c.l)/2+'px;left:'+(b-c.s)/2+'px;height:'+c.l+'px;width:'+c.s+'px';
+  document.getElementById('size').textContent=w+' x '+h+' \u00b7 '+t('scale')+' '+Math.round(s*100)+'%';
+}
+function sync(){var u=new URLSearchParams(location.search);u.set('device',device);if(device!=='full'&&orient==='landscape')u.set('orient','landscape');else u.delete('orient');
+  if(lang==='ar')u.set('lang','ar');else u.delete('lang');u.delete('page');
+  history.replaceState(null,'',location.pathname+'?'+u.toString());}
+document.querySelectorAll('#devices button').forEach(function(b){b.addEventListener('click',function(){device=b.getAttribute('data-device');layout();sync();})});
+document.getElementById('rotate').addEventListener('click',function(){orient=orient==='landscape'?'portrait':'landscape';layout();sync();});
+document.getElementById('lang').addEventListener('click',function(){lang=lang==='ar'?'en':'ar';try{localStorage.setItem('colorme-demo-lang',lang)}catch(e){}applyLang();sync();});
+addEventListener('resize',layout);
+applyLang();
+})();
+</script>
 </body>
 </html>
